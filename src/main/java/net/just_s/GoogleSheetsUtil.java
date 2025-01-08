@@ -72,6 +72,12 @@ public class GoogleSheetsUtil {
                 .setAccessType("offline")
                 .build();
 
+        Credential credential = googleAuthorizationCodeFlow.loadCredential("user");
+
+        if (credential != null && credential.getExpiresInSeconds() > 60) {
+            return credential;
+        }
+
         String authorizationUrl = googleAuthorizationCodeFlow.newAuthorizationUrl().setRedirectUri("urn:ietf:wg:oauth:2.0:oob").build();
         LOGGER.info("Authorize Playtime Logger with this URL: {}", authorizationUrl);
 
