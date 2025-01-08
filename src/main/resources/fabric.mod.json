@@ -11,7 +11,7 @@
 		"sources": "https://github.com/JustS-js/PlaytimeLogger",
 		"wiki": "https://github.com/JustS-js/PlaytimeLogger/wiki"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"environment": "server",
 	"entrypoints": {
 		"server": [
