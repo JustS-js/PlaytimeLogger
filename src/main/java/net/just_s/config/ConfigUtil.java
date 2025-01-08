@@ -5,9 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.loader.api.FabricLoader;
 import net.just_s.PTLMod;
 import org.slf4j.Logger;
 

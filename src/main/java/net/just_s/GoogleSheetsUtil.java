@@ -132,9 +132,7 @@ public class GoogleSheetsUtil {
                     .execute();
             List<List<Object>> rows = responseTotal.getValues();
             if (rows != null) {
-                LOGGER.info("rows size: " + rows.size());
                 for (List<Object> playerData : rows) {
-                    LOGGER.warn(playerData.get(1) + " | " + playerUUID.toString());
                     if (playerData.get(1).equals(playerUUID.toString())) {
                         return;
                     }
