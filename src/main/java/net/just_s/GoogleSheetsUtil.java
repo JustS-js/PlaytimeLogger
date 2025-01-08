@@ -5,6 +5,7 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
@@ -15,10 +16,7 @@ import net.just_s.config.ConfigUtil;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.List;
@@ -74,10 +72,18 @@ public class GoogleSheetsUtil {
                 .setAccessType("offline")
                 .build();
 
-        return new AuthorizationCodeInstalledApp(
-                googleAuthorizationCodeFlow, new LocalServerReceiver()
-        )
-                .authorize("user");
+        String authorizationUrl = googleAuthorizationCodeFlow.newAuthorizationUrl().setRedirectUri("urn:ietf:wg:oauth:2.0:oob").build();
+        LOGGER.info("Authorize Playtime Logger with this URL: {}", authorizationUrl);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Auth code: ");
+        String code = reader.readLine();
+
+        GoogleTokenResponse tokenResponse = googleAuthorizationCodeFlow.newTokenRequest(code)
+                .setRedirectUri("urn:ietf:wg:oauth:2.0:oob")
+                .execute();
+
+        return googleAuthorizationCodeFlow.createAndStoreCredential(tokenResponse, "user");
     }
 
     public static void logAsync(String playerName, UUID playerUUID, Event event) {
