@@ -74,8 +74,13 @@ public class GoogleSheetsUtil {
 
         Credential credential = googleAuthorizationCodeFlow.loadCredential("user");
 
-        if (credential != null && credential.getExpiresInSeconds() > 60) {
-            return credential;
+        if (credential != null) {
+            if (credential.getExpiresInSeconds() != null && credential.getExpiresInSeconds() > 60) {
+                return credential;
+            }
+            if (credential.refreshToken()) {
+                return credential;
+            }
         }
 
         String authorizationUrl = googleAuthorizationCodeFlow.newAuthorizationUrl().setRedirectUri("urn:ietf:wg:oauth:2.0:oob").build();
