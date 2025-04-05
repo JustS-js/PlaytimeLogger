@@ -79,6 +79,7 @@ public class GoogleSheetsUtil {
                 return credential;
             }
             if (credential.refreshToken()) {
+                LOGGER.info("Playtime Logger refreshed your oauth token!");
                 return credential;
             }
         }
